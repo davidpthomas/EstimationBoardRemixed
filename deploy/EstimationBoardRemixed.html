@@ -14,7 +14,7 @@
             var cardboard;
             var that = this;
             var checkBoxes = [];
-            var iterationDropdown;
+            var userDropdown;
         
             this._createLayout = function(element) {
         
@@ -28,11 +28,11 @@
                 dojo.addClass(controlDiv, "controlContainer");
                 headerDiv.appendChild(controlDiv);
                 
-                var iterationsDiv = document.createElement("div");
-                var iterationDiv = document.createElement("div");
-                iterationDiv.id = "iteration";
-                iterationsDiv.appendChild(iterationDiv);
-                headerDiv.appendChild(iterationsDiv);
+                var usersDiv = document.createElement("div");
+                var userDiv = document.createElement("div");
+                userDiv.id = "user";
+                usersDiv.appendChild(userDiv);
+                headerDiv.appendChild(usersDiv);
         
                 var checkBoxContainerDiv = document.createElement("div");
                 dojo.addClass(checkBoxContainerDiv, "typeFilterContainer");
@@ -133,9 +133,9 @@
                 //Build types based on checkbox selections
                 var queries = [];
                 
-                // Barry - add query for iteration drop down.
-                console.log(iterationDropdown.getSelectedItem());
-                var selItem = iterationDropdown.getSelectedItem();
+                // Barry - add query for user drop down.
+                console.log(userDropdown.getSelectedItem());
+                var selItem = userDropdown.getSelectedItem();
                 
                 var query = new rally.sdk.util.Query("ScheduleState < Accepted");
                 
@@ -246,15 +246,19 @@
         
                 //Refresh board
                 // --- Barry --- this._refreshBoard();
-                
-                iterationDropdown = new rally.sdk.ui.IterationDropdown({}, rallyDataSource);
-                iterationDropdown.addEventListener("onDataRetrieved",   function(a,eventArgs) {
+               
+                var userConfig = {
+                  type: 'user',
+                  attribute: 'DisplayName'
+                };
+                userDropdown = new rally.sdk.ui.ObjectDropdown(userConfig, rallyDataSource);
+                userDropdown.addEventListener("onDataRetrieved",   function(a,eventArgs) {
 					   var all = {};
 					   all[eventArgs.displayValueProperty] = "All";
 					   all[eventArgs.valueProperty] = "All";
 					   eventArgs.items.unshift(all);        
                 });
-          		iterationDropdown.display("iteration", this._refreshBoard);
+          		userDropdown.display("user", this._refreshBoard);
 
                 
             };
